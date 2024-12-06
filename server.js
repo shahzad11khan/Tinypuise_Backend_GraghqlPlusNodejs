@@ -18,6 +18,8 @@ app.get('/', (req, res) => {
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+    playground: true,
+  introspection: true,
 });
 
 // Start the server and listen on a specified port
