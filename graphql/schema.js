@@ -21,20 +21,28 @@ const schema = buildSchema(`
     id: ID
   }
 
-  type DeleteResponse {
+    type DeleteResponse {
     message: String
     id: ID
   }
 
-  type Query {
+    type AuthData {
+    userId: ID!
+    token: String!
+    tokenExpiration: Int!
+  }
+
+    type Query {
     users: [User!]!
     user(id: ID!): User
   }
+
 
   type Mutation {
     createUser(input: UserInput!): CreateUserResponse!
     updateUser(id: ID!, input: UserInput!): User!
     deleteUser(id: ID!): DeleteResponse!
+    login(email: String!, password: String!): AuthData!
   }
 `);
 

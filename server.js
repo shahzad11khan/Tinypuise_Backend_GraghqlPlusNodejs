@@ -1,34 +1,3 @@
-// // server.js
-// const { ApolloServer } = require('apollo-server');
-// const { graphqlHTTP } = require("express-graphql");
-// const express = require('express');
-// const connectDB = require('./db/index'); // Import the DB connection function
-// const typeDefs = require('./typeDefs/userTypeDefs'); // Import the GraphQL type definitions
-// const resolvers = require('./resolvers/userResolver'); // Import the resolvers
-
-// // Connect to MongoDB
-// connectDB();
-
-// const app = express();
-
-// // Root endpoint to verify GraphQL connection
-// app.get('/', (req, res) => {
-//   res.send('GraphQL server is running and connected!');
-// });
-
-
-// // Set up Apollo Server with type definitions and resolvers
-// const server = new ApolloServer({
-//   typeDefs,
-//   resolvers,
-//     playground: true,
-//   introspection: true,
-// });
-
-// // Start the server and listen on a specified port
-// server.listen({ port: process.env.PORT || 4000 }).then(({ url }) => {
-//   console.log(`Server is running at ${url}`);
-// });
 const express = require('express');
 const { graphqlHTTP } = require('express-graphql');
 const dotenv = require('dotenv');
@@ -49,10 +18,17 @@ connectDB();
 app.use('/graphql', graphqlHTTP({
   schema,
   rootValue,
-  graphiql: true, // Enable GraphiQL interface for testing
+  graphiql: process.env.NODE_ENV !== 'production', // Disable GraphiQL in production
 }));
 
+// Centralized Error Handling (Optional)
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ error: 'Something went wrong!' });
+});
+
 // Start the server
-app.listen(process.env.PORT || 4000, () => {
-  console.log(`Server is running on port ${process.env.PORT || 4000}`);
+const PORT = process.env.PORT || 4000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
