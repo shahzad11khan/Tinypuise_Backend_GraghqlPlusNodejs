@@ -1,3 +1,4 @@
+require('module-alias/register');
 const express = require('express');
 const { graphqlHTTP } = require('express-graphql');
 const dotenv = require('dotenv');
