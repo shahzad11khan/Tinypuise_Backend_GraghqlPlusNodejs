@@ -6,12 +6,12 @@ const resolvers = {
   Query: {
     // Fetch all users (excluding passwords)
     users: async () => {
-      const users = await User.find({}, '-password');
+      const users = await User.find();
       return users;
     },
     // Fetch a specific user by ID
     user: async (_, { id }) => {
-      const user = await User.findById(id, '-password');
+      const user = await User.findById(id);
       if (!user) throw new Error('User not found');
       return user;
     },
